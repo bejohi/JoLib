@@ -60,6 +60,24 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T> {
     }
 
     @Override
+    public void removeNodeNeighbours(final T nodeData){
+        Objects.requireNonNull(nodeData);
+
+        Node node = this.getNode(nodeData);
+        if (node == null) {
+            return;
+        }
+
+        node.removeAllNeighbours();
+
+        if(!this.directed){
+            for (final Node<T> outerNode : this.nodeSet) {
+                outerNode.removeNode(node);
+            }
+        }
+    }
+
+    @Override
     public void addNeighboursToNode(final T data, final Set<T> neighbours) {
         Objects.requireNonNull(data);
         Objects.requireNonNull(neighbours);
@@ -187,6 +205,10 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T> {
 
         private void removeNode(final Node<T> node) {
             this.neighbours.remove(node);
+        }
+
+        private void removeAllNeighbours(){
+            this.neighbours.clear();
         }
 
 

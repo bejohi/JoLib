@@ -147,46 +147,46 @@ public final class AdjGraphTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void breadthFirstSearch_StartNodeNull_ThrowsNullPointerException(){
+    public void breadthFirstSearch_StartNodeNull_ThrowsNullPointerException() {
         // Act and Assert
-        this.directedGraph.breadthFirstSearch(null,100);
+        this.directedGraph.breadthFirstSearch(null, 100);
     }
 
     @Test(expected = NullPointerException.class)
-    public void breadthFirstSearch_EndNodeNull_ThrowsNullPointerException(){
+    public void breadthFirstSearch_EndNodeNull_ThrowsNullPointerException() {
         // Act and Assert
-        this.directedGraph.breadthFirstSearch(100,null);
+        this.directedGraph.breadthFirstSearch(100, null);
     }
 
     @Test
-    public void breadthFirstSearch_GraphEmpty_ReturnsFalse(){
+    public void breadthFirstSearch_GraphEmpty_ReturnsFalse() {
         // Act
-        final boolean result = this.directedGraph.breadthFirstSearch(100,200);
+        final boolean result = this.directedGraph.breadthFirstSearch(100, 200);
 
         // Assert
         Assert.assertFalse(result);
     }
 
     @Test
-    public void breadthFirstSearch_NodesAreEqual_ReturnsTrue(){
+    public void breadthFirstSearch_NodesAreEqual_ReturnsTrue() {
         // Arrange
         this.directedGraph.addNode(100);
         this.directedGraph.addNode(200);
 
         // Act
-        final boolean result = this.directedGraph.breadthFirstSearch(100,100);
+        final boolean result = this.directedGraph.breadthFirstSearch(100, 100);
 
         // Assert
         Assert.assertTrue(result);
     }
 
     @Test
-    public void breadthFirstSearch_NodesAreDirectNeighbours_ReturnsTrue(){
+    public void breadthFirstSearch_NodesAreDirectNeighbours_ReturnsTrue() {
         // Arrange
-        this.directedGraph.addNeighboursToNode(100,Stream.of(200).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(100, Stream.of(200).collect(Collectors.toSet()));
 
         // Act
-        final boolean result = this.directedGraph.breadthFirstSearch(100,200);
+        final boolean result = this.directedGraph.breadthFirstSearch(100, 200);
 
         // Assert
         Assert.assertTrue(result);
@@ -194,12 +194,12 @@ public final class AdjGraphTest {
     }
 
     @Test
-    public void breadthFirstSearch_DirectedGraphNodeIsNotNeigbour_ReturnsFalse(){
+    public void breadthFirstSearch_DirectedGraphNodeIsNotNeigbour_ReturnsFalse() {
         // Arrange
-        this.directedGraph.addNeighboursToNode(100,Stream.of(200).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(100, Stream.of(200).collect(Collectors.toSet()));
 
         // Act
-        final boolean result = this.directedGraph.breadthFirstSearch(200,100);
+        final boolean result = this.directedGraph.breadthFirstSearch(200, 100);
 
         // Assert
         Assert.assertFalse(result);
@@ -207,33 +207,33 @@ public final class AdjGraphTest {
     }
 
     @Test
-    public void breadthFirstSearch_NodeIsReachableOver2Steps_ReturnsTrue(){
+    public void breadthFirstSearch_NodeIsReachableOver2Steps_ReturnsTrue() {
         // Arrange
-        this.directedGraph.addNeighboursToNode(100,Stream.of(200,300,400).collect(Collectors.toSet()));
-        this.directedGraph.addNeighboursToNode(300,Stream.of(400,500,100).collect(Collectors.toSet()));
-        this.directedGraph.addNeighboursToNode(500,Stream.of(600).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(100, Stream.of(200, 300, 400).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(300, Stream.of(400, 500, 100).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(500, Stream.of(600).collect(Collectors.toSet()));
 
         // Act
-        final boolean result = this.directedGraph.breadthFirstSearch(500,600);
+        final boolean result = this.directedGraph.breadthFirstSearch(500, 600);
 
         // Assert
         Assert.assertTrue(result);
     }
 
     @Test(expected = NullPointerException.class)
-    public void removeNode_NodeIsNull_ThrowsNullPointerException(){
+    public void removeNode_NodeIsNull_ThrowsNullPointerException() {
         // Act and Assert
         this.directedGraph.removeNode(null);
     }
 
     @Test
-    public void removeNode_NodeIsNotInGraph_NoExceptionThrown(){
+    public void removeNode_NodeIsNotInGraph_NoExceptionThrown() {
         // Act and Assert
         this.directedGraph.removeNode(100);
     }
 
     @Test
-    public void removeNode_NodeHasNoNeighbours_NodeIsRemoved(){
+    public void removeNode_NodeHasNoNeighbours_NodeIsRemoved() {
         // Arrange
         this.directedGraph.addNode(100);
 
@@ -245,20 +245,20 @@ public final class AdjGraphTest {
     }
 
     @Test
-    public void removeNode_NodeHasNeighbours_NodeIsAlsoRemovedAsNeighbour(){
+    public void removeNode_NodeHasNeighbours_NodeIsAlsoRemovedAsNeighbour() {
         // Arrange
-        this.directedGraph.addNeighboursToNode(100,Stream.of(200,300).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(100, Stream.of(200, 300).collect(Collectors.toSet()));
 
         // Act
         this.directedGraph.removeNode(200);
 
         // Assert
-        Assert.assertEquals(2,this.directedGraph.getNodes().size());
-        Assert.assertEquals(1,this.directedGraph.getNeighbours(100).size());
+        Assert.assertEquals(2, this.directedGraph.getNodes().size());
+        Assert.assertEquals(1, this.directedGraph.getNeighbours(100).size());
     }
 
     @Test
-    public void cloneGraph_GraphIsEmpty_ReturnsEmptyGraph(){
+    public void cloneGraph_GraphIsEmpty_ReturnsEmptyGraph() {
         // Act
         final AdjGraph<Integer> newGraph = this.directedGraph.cloneGraph();
 
@@ -268,18 +268,56 @@ public final class AdjGraphTest {
     }
 
     @Test
-    public void cloneGraph_GraphWithNeighbourNodes_NeighboursAreAlsoInNewGraph(){
-        this.directedGraph.addNeighboursToNode(100,Stream.of(200,300).collect(Collectors.toSet()));
-        this.directedGraph.addNeighboursToNode(200,Stream.of(400,500).collect(Collectors.toSet()));
+    public void cloneGraph_GraphWithNeighbourNodes_NeighboursAreAlsoInNewGraph() {
+        this.directedGraph.addNeighboursToNode(100, Stream.of(200, 300).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(200, Stream.of(400, 500).collect(Collectors.toSet()));
 
         // Act
         final AdjGraph<Integer> newGraph = this.directedGraph.cloneGraph();
 
         // Assert
-        Assert.assertEquals(5,newGraph.getNodes().size());
-        Assert.assertEquals(2,newGraph.getNeighbours(200).size());
-        Assert.assertEquals(0,newGraph.getNeighbours(500).size());
+        Assert.assertEquals(5, newGraph.getNodes().size());
+        Assert.assertEquals(2, newGraph.getNeighbours(200).size());
+        Assert.assertEquals(0, newGraph.getNeighbours(500).size());
 
+    }
+
+    @Test
+    public void removeAllNeighbours_NodeIsNotInGraph_NoExceptionThrown() {
+        // Act and Assert
+        this.directedGraph.removeNodeNeighbours(100);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void removeAllNeighbours_NodeIsNull_ThrowsNullPointerException() {
+        // Act and Assert
+        this.directedGraph.removeNodeNeighbours(null);
+    }
+
+    public void removeAllNeighbours_NodeHasNeighboursAndIsNeighbourGraphIsDirected_OnylNeigboursAreCleaned() {
+        // Arrange
+        this.directedGraph.addNeighboursToNode(100, Stream.of(200, 300).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(200, Stream.of(100, 300).collect(Collectors.toSet()));
+
+        // Act
+        this.directedGraph.removeNodeNeighbours(100);
+
+        // Assert
+        Assert.assertTrue(this.directedGraph.getNeighbours(100).isEmpty());
+        Assert.assertEquals(2, this.directedGraph.getNeighbours(200).size());
+    }
+
+    public void removeAllNeighbours_NodeHasNeighboursAndIsNeighbourGraphIsNotDirected_AllNeighboursAreRemoved() {
+        // Arrange
+        this.undirectedGraph.addNeighboursToNode(100, Stream.of(200, 300).collect(Collectors.toSet()));
+        this.undirectedGraph.addNeighboursToNode(200, Stream.of(100, 300).collect(Collectors.toSet()));
+
+        // Act
+        this.undirectedGraph.removeNodeNeighbours(100);
+
+        // Assert
+        Assert.assertTrue(this.undirectedGraph.getNeighbours(100).isEmpty());
+        Assert.assertEquals(1, this.undirectedGraph.getNeighbours(200).size());
     }
 }
 

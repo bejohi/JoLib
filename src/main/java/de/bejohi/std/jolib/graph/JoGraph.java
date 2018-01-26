@@ -38,6 +38,15 @@ public interface JoGraph<T extends Comparable<T>> {
      */
     void removeNode(T nodeData);
 
+
+    /**
+     * Removes all neighbours from the node. If the graph is not directed, the node itself will be removed as neighbour
+     * from all other nodes.
+     *
+     * @param nodeData the node, where all neighbours should be removed.
+     */
+    void removeNodeNeighbours(T nodeData);
+
     /**
      * Adds a node and a list of its neighbours. If the node is not already stored in the graph it will be created.
      * All Neighbours will be stored as neighbours of the node. If one of the neighbours is not already stored
