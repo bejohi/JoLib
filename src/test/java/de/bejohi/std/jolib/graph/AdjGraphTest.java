@@ -256,5 +256,30 @@ public final class AdjGraphTest {
         Assert.assertEquals(2,this.directedGraph.getNodes().size());
         Assert.assertEquals(1,this.directedGraph.getNeighbours(100).size());
     }
+
+    @Test
+    public void cloneGraph_GraphIsEmpty_ReturnsEmptyGraph(){
+        // Act
+        final AdjGraph<Integer> newGraph = this.directedGraph.cloneGraph();
+
+        // Assert
+        Assert.assertTrue(newGraph.getNodes().isEmpty());
+
+    }
+
+    @Test
+    public void cloneGraph_GraphWithNeighbourNodes_NeighboursAreAlsoInNewGraph(){
+        this.directedGraph.addNeighboursToNode(100,Stream.of(200,300).collect(Collectors.toSet()));
+        this.directedGraph.addNeighboursToNode(200,Stream.of(400,500).collect(Collectors.toSet()));
+
+        // Act
+        final AdjGraph<Integer> newGraph = this.directedGraph.cloneGraph();
+
+        // Assert
+        Assert.assertEquals(5,newGraph.getNodes().size());
+        Assert.assertEquals(2,newGraph.getNeighbours(200).size());
+        Assert.assertEquals(0,newGraph.getNeighbours(500).size());
+
+    }
 }
 

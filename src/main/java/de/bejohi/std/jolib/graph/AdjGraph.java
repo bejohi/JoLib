@@ -112,6 +112,18 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T> {
         return false;
     }
 
+    @Override
+    public AdjGraph<T> cloneGraph() {
+        AdjGraph<T> newGraph = new AdjGraph<>(this.directed);
+
+        for(final Node<T> node : this.nodeSet){
+            newGraph.addNeighboursToNode(node.data,node.getNeighbours()
+                    .stream().map(Node::getData).collect(Collectors.toSet()));
+        }
+
+        return newGraph;
+    }
+
     private void setAllNodesToNotVisited() {
         for (final Node<T> node : this.nodeSet) {
             node.setVisited(false);

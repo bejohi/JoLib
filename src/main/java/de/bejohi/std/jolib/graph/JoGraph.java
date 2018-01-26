@@ -68,4 +68,9 @@ public interface JoGraph<T extends Comparable<T>> {
      * @throws NullPointerException in case startNodeData or endNodeData == null.
      */
     boolean breadthFirstSearch(final T startNodeData, final T endNodeData);
+
+    /**
+     * @return a new instance of the graph.
+     */
+    JoGraph<T> cloneGraph();
 }
