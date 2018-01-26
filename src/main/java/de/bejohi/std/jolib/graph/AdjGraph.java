@@ -5,9 +5,10 @@ import java.util.stream.Collectors;
 
 /**
  * An implementation of the JoGraph which uses an adjacency-matrix for representing the graph structure.
+ *
  * @param <T>
  */
-public class AdjGraph<T extends Comparable<T>> implements JoGraph<T>{
+public class AdjGraph<T extends Comparable<T>> implements JoGraph<T> {
     private final Set<Node<T>> nodeSet;
     private final boolean directed;
 
@@ -44,6 +45,21 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T>{
     }
 
     @Override
+    public void removeNode(final T nodeData) {
+        Objects.requireNonNull(nodeData);
+
+        Node nodeToRemove = this.getNode(nodeData);
+        if (nodeToRemove == null) {
+            return;
+        }
+        for (final Node<T> outerNode : this.nodeSet) {
+            outerNode.removeNode(nodeToRemove);
+        }
+
+        this.nodeSet.remove(nodeToRemove);
+    }
+
+    @Override
     public void addNeighboursToNode(final T data, final Set<T> neighbours) {
         Objects.requireNonNull(data);
         Objects.requireNonNull(neighbours);
@@ -65,14 +81,14 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T>{
         }
     }
 
-    public boolean breadthFirstSearch(final T startNodeData, final T endNodeData){
+    public boolean breadthFirstSearch(final T startNodeData, final T endNodeData) {
         Objects.requireNonNull(startNodeData);
         Objects.requireNonNull(endNodeData);
 
         Node<T> startNode = this.getNode(startNodeData);
         Node<T> endNode = this.getNode(endNodeData);
 
-        if(startNode == null || endNode == null){
+        if (startNode == null || endNode == null) {
             return false;
         }
 
@@ -81,13 +97,13 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T>{
 
         Queue<Node<T>> queue = new PriorityQueue<>();
         queue.add(startNode);
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             Node<T> currentNode = queue.poll();
-            if(currentNode == endNode){
+            if (currentNode == endNode) {
                 return true;
             }
-            for(final Node<T> neigbour : currentNode.getNeighbours()){
-                if(!neigbour.isVisited()){
+            for (final Node<T> neigbour : currentNode.getNeighbours()) {
+                if (!neigbour.isVisited()) {
                     queue.add(neigbour);
                     neigbour.setVisited(true);
                 }
@@ -96,8 +112,8 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T>{
         return false;
     }
 
-    private void setAllNodesToNotVisited(){
-        for(final Node<T> node : this.nodeSet){
+    private void setAllNodesToNotVisited() {
+        for (final Node<T> node : this.nodeSet) {
             node.setVisited(false);
         }
     }
@@ -127,7 +143,7 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T>{
         return null;
     }
 
-    private static class Node<T extends Comparable<T>> implements Comparable<T>{
+    private static class Node<T extends Comparable<T>> implements Comparable<T> {
         private final T data;
         private Set<Node<T>> neighbours;
         private boolean visited;
@@ -141,21 +157,26 @@ public class AdjGraph<T extends Comparable<T>> implements JoGraph<T>{
             return this.neighbours.add(newNeighbour);
         }
 
-        public Set<Node<T>> getNeighbours() {
+        private Set<Node<T>> getNeighbours() {
             return neighbours;
         }
 
-        public T getData() {
+        T getData() {
             return data;
         }
 
-        public boolean isVisited() {
+        private boolean isVisited() {
             return visited;
         }
 
-        public void setVisited(boolean visited) {
+        private void setVisited(final boolean visited) {
             this.visited = visited;
         }
+
+        private void removeNode(final Node<T> node) {
+            this.neighbours.remove(node);
+        }
+
 
         @Override
         public int compareTo(T o) {

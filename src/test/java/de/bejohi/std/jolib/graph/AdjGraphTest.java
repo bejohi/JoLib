@@ -219,5 +219,42 @@ public final class AdjGraphTest {
         // Assert
         Assert.assertTrue(result);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void removeNode_NodeIsNull_ThrowsNullPointerException(){
+        // Act and Assert
+        this.directedGraph.removeNode(null);
+    }
+
+    @Test
+    public void removeNode_NodeIsNotInGraph_NoExceptionThrown(){
+        // Act and Assert
+        this.directedGraph.removeNode(100);
+    }
+
+    @Test
+    public void removeNode_NodeHasNoNeighbours_NodeIsRemoved(){
+        // Arrange
+        this.directedGraph.addNode(100);
+
+        // Act
+        this.directedGraph.removeNode(100);
+
+        // Assert
+        Assert.assertTrue(this.directedGraph.getNodes().isEmpty());
+    }
+
+    @Test
+    public void removeNode_NodeHasNeighbours_NodeIsAlsoRemovedAsNeighbour(){
+        // Arrange
+        this.directedGraph.addNeighboursToNode(100,Stream.of(200,300).collect(Collectors.toSet()));
+
+        // Act
+        this.directedGraph.removeNode(200);
+
+        // Assert
+        Assert.assertEquals(2,this.directedGraph.getNodes().size());
+        Assert.assertEquals(1,this.directedGraph.getNeighbours(100).size());
+    }
 }
 

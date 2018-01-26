@@ -3,12 +3,12 @@ package de.bejohi.std.jolib.graph;
 import java.util.Set;
 
 /**
- * JoGraph represents a simple Graph Structure. Speed and Performance are no important values for this Representation.
+ * JoGraph represents a simple graph structure. Speed and Performance are not important values for this representation.
  * But the data integrity and the simple usability are important. The graph can be directed or undirected. The
  * internal data structure implementation (e.g. Adjacency-Matrix, Adjacency-List) is not visible for the interface
  * client.
  *
- * @param <T> T can be every object type which implements the interface Comparable<T>
+ * @param <T> T can be every object type which implements the interface Comparable.
  */
 public interface JoGraph<T extends Comparable<T>> {
     /**
@@ -29,6 +29,14 @@ public interface JoGraph<T extends Comparable<T>> {
      * @return true if a node was found, false otherwise.
      */
     boolean containsNode(final T nodeData);
+
+    /**
+     * Removes the given node from the graph.
+     *
+     * @param nodeData the node to remove.
+     * @throws NullPointerException in case nodeData == null.
+     */
+    void removeNode(T nodeData);
 
     /**
      * Adds a node and a list of its neighbours. If the node is not already stored in the graph it will be created.
@@ -53,8 +61,9 @@ public interface JoGraph<T extends Comparable<T>> {
 
     /**
      * Runs an breath first search on the graph.
+     *
      * @param startNodeData the start node.
-     * @param endNodeData the target node.
+     * @param endNodeData   the target node.
      * @return true if there is a connection between the two given nodes, otherwise false.
      * @throws NullPointerException in case startNodeData or endNodeData == null.
      */
